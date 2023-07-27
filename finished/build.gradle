@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.healthconnect.codelab"
@@ -68,7 +68,7 @@ dependencies {
     implementation(composeBom)
 
     // Add a dependency of Health Connect SDK
-    implementation "androidx.health.connect:connect-client:1.0.0-alpha11"
+    implementation "androidx.health.connect:connect-client:1.1.0-alpha02"
 
     // For viewmodel support
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
