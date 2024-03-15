@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.health.connect.client.HealthConnectClient
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -48,8 +49,6 @@ import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.presentation.theme.HealthConnectTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
-const val HEALTH_CONNECT_SETTINGS_ACTION = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
 
 /**
  * The side navigation drawer used to explore each Health Connect feature.
@@ -124,7 +123,7 @@ fun Drawer(
           .clickable(
               onClick = {
                   val settingsIntent = Intent()
-                  settingsIntent.action = HEALTH_CONNECT_SETTINGS_ACTION
+                  settingsIntent.action = HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS
                   activity.startActivity(settingsIntent)
               }
           )
