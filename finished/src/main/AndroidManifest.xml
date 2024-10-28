@@ -42,6 +42,12 @@
       </intent-filter>
 
       <!-- TODO: Add intent filter to handle permission rationale intent -->
+      <!-- Permission handling for Android 13- -->
+      <intent-filter>
+        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+      </intent-filter>
+
+      <!-- Permission handling for Android 14+ -->
       <intent-filter>
         <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
         <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
