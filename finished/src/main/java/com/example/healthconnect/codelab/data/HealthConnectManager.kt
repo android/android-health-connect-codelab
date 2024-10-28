@@ -22,8 +22,10 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.mutableStateOf
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.HealthConnectClient.Companion.SDK_AVAILABLE
+import androidx.health.connect.client.HealthConnectFeatures
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.Change
+import androidx.health.connect.client.feature.ExperimentalFeatureAvailabilityApi
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.Record
@@ -66,6 +68,13 @@ class HealthConnectManager(private val context: Context) {
       isSupported() -> HealthConnectAvailability.NOT_INSTALLED
       else -> HealthConnectAvailability.NOT_SUPPORTED
     }
+  }
+
+  @OptIn(ExperimentalFeatureAvailabilityApi::class)
+  fun isFeatureAvailable(feature: Int): Boolean{
+    return healthConnectClient
+      .features
+      .getFeatureStatus(feature) == HealthConnectFeatures.FEATURE_STATUS_AVAILABLE
   }
 
   /**
