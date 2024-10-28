@@ -7,7 +7,7 @@ This repository contains a sample to help you get started writing [Health Connec
 You will need:
 
 *   An Android device or emulator running API level 27 or greater
-*   The [Health Connect APK][health-connect-apk] installed on the device or emulator
+*   The [Health Connect APK][health-connect-apk] installed on the device or emulator (for Android 13 and lower)
 
 ## Screenshots
 
@@ -27,4 +27,4 @@ submitting a pull request through GitHub. Please see [CONTRIBUTING][contributing
 
 [health-connect]: https://developer.android.com/health-connect
 [health-connect-apk]: https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata
-[contributing]: ../../CONTRIBUTING.md
+[contributing]: ./CONTRIBUTING.md
