@@ -97,9 +97,8 @@ fun InputReadingsScreen(
 
   if (uiState != InputReadingsViewModel.UiState.Uninitialized) {
     LazyColumn(
-      modifier = Modifier
-          .fillMaxSize()
-          .padding(32.dp),
+      modifier = Modifier.fillMaxSize(),
+      verticalArrangement = Arrangement.Top,
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       if (!permissionsGranted) {
