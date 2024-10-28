@@ -10,8 +10,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.healthconnect.codelab">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
   <!-- TODO: Required to specify which Health Connect permissions the app can request -->
   <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
