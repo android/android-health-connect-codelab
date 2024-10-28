@@ -18,6 +18,10 @@ package com.example.healthconnect.codelab.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.healthconnect.codelab.presentation.workers.BackgroundReadWorker
+import java.util.concurrent.TimeUnit
 
 /**
  * The entry point into the sample.
@@ -27,6 +31,12 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     val healthConnectManager = (application as BaseApplication).healthConnectManager
+
+    val readRequest = OneTimeWorkRequestBuilder<BackgroundReadWorker>()
+      .setInitialDelay(10, TimeUnit.SECONDS)
+      .build()
+
+    WorkManager.getInstance(this).enqueue(readRequest)
 
     setContent {
       HealthConnectApp(healthConnectManager = healthConnectManager)
