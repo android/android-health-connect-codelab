@@ -39,12 +39,16 @@ import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import androidx.health.connect.client.units.Mass
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.healthconnect.codelab.workers.BackgroundReadWorker
 import java.io.IOException
 import java.time.Instant
 import java.time.ZonedDateTime
 import kotlin.random.Random
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.TimeUnit
 
 // The minimum android level that can use Health Connect
 const val MIN_SUPPORTED_SDK = Build.VERSION_CODES.O_MR1
@@ -288,6 +292,16 @@ class HealthConnectManager(private val context: Context) {
       nextChangesToken = response.nextChangesToken
     } while (response.hasMore)
     emit(ChangesMessage.NoMoreChanges(nextChangesToken))
+  }
+
+  /**
+   * Enqueue the BackgroundReadWorker
+   */
+  fun enqueueBackgroundWorker(){
+    val readRequest = OneTimeWorkRequestBuilder<BackgroundReadWorker>()
+      .setInitialDelay(10, TimeUnit.SECONDS)
+      .build()
+    WorkManager.getInstance(context).enqueue(readRequest)
   }
 
   /**

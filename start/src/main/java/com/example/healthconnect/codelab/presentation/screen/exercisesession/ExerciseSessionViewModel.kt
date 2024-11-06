@@ -20,7 +20,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.health.connect.client.HealthConnectFeatures
+import androidx.health.connect.client.feature.ExperimentalFeatureAvailabilityApi
 import androidx.health.connect.client.permission.HealthPermission
+import androidx.health.connect.client.permission.HealthPermission.Companion.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.StepsRecord
@@ -44,11 +47,20 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     HealthPermission.getWritePermission(ExerciseSessionRecord::class),
     HealthPermission.getReadPermission(ExerciseSessionRecord::class),
     HealthPermission.getWritePermission(StepsRecord::class),
+    HealthPermission.getReadPermission(StepsRecord::class),
     HealthPermission.getWritePermission(TotalCaloriesBurnedRecord::class),
     HealthPermission.getWritePermission(HeartRateRecord::class)
   )
 
+  val backgroundReadPermissions = setOf(PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND)
+
   var permissionsGranted = mutableStateOf(false)
+    private set
+
+  var backgroundReadAvailable = mutableStateOf(false)
+    private set
+
+  var backgroundReadGranted = mutableStateOf(false)
     private set
 
   var sessionsList: MutableState<List<ExerciseSessionRecord>> = mutableStateOf(listOf())
@@ -93,6 +105,10 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     sessionsList.value = healthConnectManager.readExerciseSessions(startOfDay.toInstant(), now)
   }
 
+  fun enqueueBackgroundWorker(){
+    healthConnectManager.enqueueBackgroundWorker()
+  }
+
   /**
    * Provides permission check and error handling for Health Connect suspend function calls.
    *
@@ -103,8 +119,14 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
    * Where an error is caught, of the type Health Connect is known to throw, [uiState] is set to
    * [UiState.Error], which results in the snackbar being used to show the error message.
    */
+  @OptIn(ExperimentalFeatureAvailabilityApi::class)
   private suspend fun tryWithPermissionsCheck(block: suspend () -> Unit) {
     permissionsGranted.value = healthConnectManager.hasAllPermissions(permissions)
+    backgroundReadAvailable.value = healthConnectManager.isFeatureAvailable(
+      HealthConnectFeatures.FEATURE_READ_HEALTH_DATA_IN_BACKGROUND
+    )
+    backgroundReadGranted.value = healthConnectManager.hasAllPermissions(backgroundReadPermissions)
+
     uiState = try {
       if (permissionsGranted.value) {
         block()

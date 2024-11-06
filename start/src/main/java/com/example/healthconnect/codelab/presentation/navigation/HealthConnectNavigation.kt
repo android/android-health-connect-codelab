@@ -81,6 +81,9 @@ fun HealthConnectNavigation(
       val permissionsGranted by viewModel.permissionsGranted
       val sessionsList by viewModel.sessionsList
       val permissions = viewModel.permissions
+      val backgroundReadPermissions = viewModel.backgroundReadPermissions
+      val backgroundReadAvailable by viewModel.backgroundReadAvailable
+      val backgroundReadGranted by viewModel.backgroundReadGranted
       val onPermissionsResult = { viewModel.initialLoad() }
       val permissionsLauncher =
         rememberLauncherForActivityResult(viewModel.permissionsLauncher) {
@@ -89,6 +92,12 @@ fun HealthConnectNavigation(
       ExerciseSessionScreen(
         permissionsGranted = permissionsGranted,
         permissions = permissions,
+        backgroundReadAvailable = backgroundReadAvailable,
+        backgroundReadGranted = backgroundReadGranted,
+        backgroundReadPermissions = backgroundReadPermissions,
+        onReadClick = {
+          viewModel.enqueueBackgroundWorker()
+        },
         sessionsList = sessionsList,
         uiState = viewModel.uiState,
         onInsertClick = {

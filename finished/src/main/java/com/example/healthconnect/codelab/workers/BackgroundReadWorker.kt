@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.presentation.workers
+package com.example.healthconnect.codelab.workers
 
 import android.content.Context
 import android.util.Log
@@ -11,6 +11,9 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.coroutineScope
 import java.time.LocalDateTime
 
+/*
+ *  Read total steps in last 24 hours
+ */
 class BackgroundReadWorker(context: Context, workerParams: WorkerParameters): CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result = coroutineScope {
         val context = applicationContext
@@ -26,8 +29,7 @@ class BackgroundReadWorker(context: Context, workerParams: WorkerParameters): Co
         val response = healthConnectClient.aggregate(request)
         val stepsCount = (response[StepsRecord.COUNT_TOTAL]?: 0).toInt()
 
-        Log.i("AutoReadWorker", "There are $stepsCount steps in Health Connect in last 24 hours. ")
-
+        Log.i("BackgroundReadWorker", "There are $stepsCount steps in Health Connect in last 24 hours. ")
 
         return@coroutineScope Result.success()
     }

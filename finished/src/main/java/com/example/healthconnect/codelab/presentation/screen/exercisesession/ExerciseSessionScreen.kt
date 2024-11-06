@@ -51,6 +51,7 @@ fun ExerciseSessionScreen(
   backgroundReadPermissions: Set<String>,
   backgroundReadAvailable: Boolean,
   backgroundReadGranted: Boolean,
+  onReadClick: () -> Unit = {},
   sessionsList: List<ExerciseSessionRecord>,
   uiState: ExerciseSessionViewModel.UiState,
   onInsertClick: () -> Unit = {},
@@ -127,6 +128,20 @@ fun ExerciseSessionScreen(
               } else {
                 Text("Background Read Is Not Available")
               }
+            }
+          }
+        } else {
+          item {
+            Button(
+              modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(4.dp),
+              onClick = {
+                onReadClick()
+              },
+            ) {
+              Text("Read Steps In Background")
             }
           }
         }

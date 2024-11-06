@@ -47,9 +47,12 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     HealthPermission.getWritePermission(ExerciseSessionRecord::class),
     HealthPermission.getReadPermission(ExerciseSessionRecord::class),
     HealthPermission.getWritePermission(StepsRecord::class),
+    HealthPermission.getReadPermission(StepsRecord::class),
     HealthPermission.getWritePermission(TotalCaloriesBurnedRecord::class),
-    HealthPermission.getWritePermission(HeartRateRecord::class)
+    HealthPermission.getWritePermission(HeartRateRecord::class),
+
   )
+
   val backgroundReadPermissions = setOf(PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND)
 
   var permissionsGranted = mutableStateOf(false)
@@ -101,6 +104,10 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     val now = Instant.now()
 
     sessionsList.value = healthConnectManager.readExerciseSessions(startOfDay.toInstant(), now)
+  }
+
+  fun enqueueBackgroundWorker(){
+    healthConnectManager.enqueueBackgroundWorker()
   }
 
   /**
