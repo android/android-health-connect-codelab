@@ -124,9 +124,9 @@ fun ExerciseSessionScreen(
               enabled = backgroundReadAvailable,
             ) {
               if (backgroundReadAvailable){
-                Text("Request Background Read")
+                Text(stringResource(R.string.request_background_read))
               } else {
-                Text("Background Read Is Not Available")
+                Text(stringResource(R.string.background_read_is_not_available))
               }
             }
           }
@@ -141,7 +141,7 @@ fun ExerciseSessionScreen(
                 onReadClick()
               },
             ) {
-              Text("Read Steps In Background")
+              Text(stringResource(R.string.read_steps_in_background))
             }
           }
         }
