@@ -105,8 +105,8 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     sessionsList.value = healthConnectManager.readExerciseSessions(startOfDay.toInstant(), now)
   }
 
-  fun enqueueBackgroundWorker(){
-    healthConnectManager.enqueueBackgroundWorker()
+  fun enqueueReadStepWorker(){
+    healthConnectManager.enqueueReadStepWorker()
   }
 
   /**

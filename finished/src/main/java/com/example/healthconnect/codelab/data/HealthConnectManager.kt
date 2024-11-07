@@ -41,7 +41,7 @@ import androidx.health.connect.client.units.Energy
 import androidx.health.connect.client.units.Mass
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.healthconnect.codelab.workers.BackgroundReadWorker
+import com.example.healthconnect.codelab.workers.ReadStepWorker
 import java.io.IOException
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -295,10 +295,10 @@ class HealthConnectManager(private val context: Context) {
   }
 
   /**
-   * Enqueue the BackgroundReadWorker
+   * Enqueue the ReadStepWorker
    */
-  fun enqueueBackgroundWorker(){
-    val readRequest = OneTimeWorkRequestBuilder<BackgroundReadWorker>()
+  fun enqueueReadStepWorker(){
+    val readRequest = OneTimeWorkRequestBuilder<ReadStepWorker>()
       .setInitialDelay(10, TimeUnit.SECONDS)
       .build()
     WorkManager.getInstance(context).enqueue(readRequest)

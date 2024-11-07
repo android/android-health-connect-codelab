@@ -11,7 +11,10 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.coroutineScope
 import java.time.LocalDateTime
 
-class BackgroundReadWorker(context: Context, workerParams: WorkerParameters): CoroutineWorker(context, workerParams) {
+/**
+ *  Read total steps in last 24 hours
+ */
+class ReadStepWorker(context: Context, workerParams: WorkerParameters): CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result = coroutineScope {
         val context = applicationContext
         val healthConnectClient = HealthConnectClient.getOrCreate(context)
@@ -26,7 +29,7 @@ class BackgroundReadWorker(context: Context, workerParams: WorkerParameters): Co
         val response = healthConnectClient.aggregate(request)
         val stepsCount = (response[StepsRecord.COUNT_TOTAL]?: 0).toInt()
 
-        Log.i("BackgroundReadWorker", "There are $stepsCount steps in Health Connect in last 24 hours. ")
+        Log.i("BackgroundReadWorker", "There are $stepsCount steps in Health Connect in the last 24 hours. ")
 
 
         return@coroutineScope Result.success()

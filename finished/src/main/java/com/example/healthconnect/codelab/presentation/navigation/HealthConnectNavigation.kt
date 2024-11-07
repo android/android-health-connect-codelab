@@ -96,7 +96,7 @@ fun HealthConnectNavigation(
         backgroundReadGranted = backgroundReadGranted,
         backgroundReadPermissions = backgroundReadPermissions,
         onReadClick = {
-          viewModel.enqueueBackgroundWorker()
+          viewModel.enqueueReadStepWorker()
         },
         sessionsList = sessionsList,
         uiState = viewModel.uiState,
