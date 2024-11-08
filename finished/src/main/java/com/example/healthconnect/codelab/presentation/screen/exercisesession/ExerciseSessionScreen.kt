@@ -48,6 +48,10 @@ import java.util.UUID
 fun ExerciseSessionScreen(
   permissions: Set<String>,
   permissionsGranted: Boolean,
+  backgroundReadPermissions: Set<String>,
+  backgroundReadAvailable: Boolean,
+  backgroundReadGranted: Boolean,
+  onReadClick: () -> Unit = {},
   sessionsList: List<ExerciseSessionRecord>,
   uiState: ExerciseSessionViewModel.UiState,
   onInsertClick: () -> Unit = {},
@@ -107,6 +111,40 @@ fun ExerciseSessionScreen(
             Text(stringResource(id = R.string.insert_exercise_session))
           }
         }
+        if (!backgroundReadGranted) {
+          item {
+            Button(
+              modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(4.dp),
+              onClick = {
+                onPermissionsLaunch(backgroundReadPermissions)
+              },
+              enabled = backgroundReadAvailable,
+            ) {
+              if (backgroundReadAvailable){
+                Text(stringResource(R.string.request_background_read))
+              } else {
+                Text(stringResource(R.string.background_read_is_not_available))
+              }
+            }
+          }
+        } else {
+          item {
+            Button(
+              modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(4.dp),
+              onClick = {
+                onReadClick()
+              },
+            ) {
+              Text(stringResource(R.string.read_steps_in_background))
+            }
+          }
+        }
 
         items(sessionsList) { session ->
           ExerciseSessionRow(
@@ -135,6 +173,9 @@ fun ExerciseSessionScreenPreview() {
     ExerciseSessionScreen(
       permissions = setOf(),
       permissionsGranted = true,
+      backgroundReadPermissions = setOf(),
+      backgroundReadAvailable = false,
+      backgroundReadGranted = false,
       sessionsList = listOf(
         ExerciseSessionRecord(
           exerciseType = ExerciseSessionRecord.EXERCISE_TYPE_RUNNING,

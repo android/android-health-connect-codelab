@@ -22,8 +22,10 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.mutableStateOf
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.HealthConnectClient.Companion.SDK_AVAILABLE
+import androidx.health.connect.client.HealthConnectFeatures
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.Change
+import androidx.health.connect.client.feature.ExperimentalFeatureAvailabilityApi
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
@@ -38,6 +40,9 @@ import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import androidx.health.connect.client.units.Mass
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.healthconnect.codelab.workers.ReadStepWorker
 import java.io.IOException
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -45,6 +50,7 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.TimeUnit
 
 // The minimum android level that can use Health Connect
 const val MIN_SUPPORTED_SDK = Build.VERSION_CODES.O_MR1
@@ -68,6 +74,13 @@ class HealthConnectManager(private val context: Context) {
       isSupported() -> HealthConnectAvailability.NOT_INSTALLED
       else -> HealthConnectAvailability.NOT_SUPPORTED
     }
+  }
+
+  @OptIn(ExperimentalFeatureAvailabilityApi::class)
+  fun isFeatureAvailable(feature: Int): Boolean{
+    return healthConnectClient
+      .features
+      .getFeatureStatus(feature) == HealthConnectFeatures.FEATURE_STATUS_AVAILABLE
   }
 
   /**
@@ -154,6 +167,16 @@ class HealthConnectManager(private val context: Context) {
    */
   suspend fun getChanges(token: String): Flow<ChangesMessage> = flow {
     Toast.makeText(context, "TODO: get new changes", Toast.LENGTH_SHORT).show()
+  }
+
+  /**
+   * Enqueue the ReadStepWorker
+   */
+  fun enqueueReadStepWorker(){
+    val readRequest = OneTimeWorkRequestBuilder<ReadStepWorker>()
+      .setInitialDelay(10, TimeUnit.SECONDS)
+      .build()
+    WorkManager.getInstance(context).enqueue(readRequest)
   }
 
   /**
