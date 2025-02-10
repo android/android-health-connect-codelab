@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import com.example.healthconnect.codelab.presentation.theme.HealthConnectTheme
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 /**
@@ -36,6 +37,7 @@ fun ExerciseSessionInfoColumn(
     start: ZonedDateTime,
     end: ZonedDateTime,
     uid: String,
+    sourcePackageName: String,
     name: String,
     onClick: (String) -> Unit = {},
 ) {
@@ -46,10 +48,12 @@ fun ExerciseSessionInfoColumn(
   ) {
     Text(
       color = MaterialTheme.colors.primary,
-      text = "${start.toLocalTime()} - ${end.toLocalTime()}",
+      text = "${start.toLocalDateTime().truncatedTo(ChronoUnit.SECONDS)} - ${end.toLocalDateTime().truncatedTo(
+        ChronoUnit.SECONDS)}",
       style = MaterialTheme.typography.caption
     )
     Text(name)
+    Text(sourcePackageName)
     Text(uid)
   }
 }
@@ -62,6 +66,7 @@ fun ExerciseSessionInfoColumnPreview() {
       ZonedDateTime.now().minusMinutes(30),
       ZonedDateTime.now(),
       UUID.randomUUID().toString(),
+      "com.example.healthconnect.codelab",
       "Running"
     )
   }
