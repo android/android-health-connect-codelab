@@ -51,7 +51,10 @@ fun ExerciseSessionScreen(
   backgroundReadPermissions: Set<String>,
   backgroundReadAvailable: Boolean,
   backgroundReadGranted: Boolean,
-  onReadClick: () -> Unit = {},
+  historyReadPermissions: Set<String>,
+  historyReadAvailable: Boolean,
+  historyReadGranted: Boolean,
+  onBackgroundReadClick: () -> Unit = {},
   sessionsList: List<ExerciseSessionRecord>,
   uiState: ExerciseSessionViewModel.UiState,
   onInsertClick: () -> Unit = {},
@@ -138,10 +141,31 @@ fun ExerciseSessionScreen(
                 .height(48.dp)
                 .padding(4.dp),
               onClick = {
-                onReadClick()
+                onBackgroundReadClick()
               },
             ) {
               Text(stringResource(R.string.read_steps_in_background))
+            }
+          }
+        }
+
+        if (!historyReadGranted) {
+          item {
+            Button(
+              modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(4.dp),
+              onClick = {
+                onPermissionsLaunch(historyReadPermissions)
+              },
+              enabled = historyReadAvailable,
+            ) {
+              if (historyReadAvailable){
+                Text(stringResource(R.string.request_history_read))
+              } else {
+                Text(stringResource(R.string.history_read_is_not_available))
+              }
             }
           }
         }
@@ -151,6 +175,7 @@ fun ExerciseSessionScreen(
             ZonedDateTime.ofInstant(session.startTime, session.startZoneOffset),
             ZonedDateTime.ofInstant(session.endTime, session.endZoneOffset),
             session.metadata.id,
+            session.metadata.dataOrigin.packageName,
             session.title ?: stringResource(R.string.no_title),
             onDetailsClick = { uid ->
               onDetailsClick(uid)
@@ -176,6 +201,9 @@ fun ExerciseSessionScreenPreview() {
       backgroundReadPermissions = setOf(),
       backgroundReadAvailable = false,
       backgroundReadGranted = false,
+      historyReadPermissions = setOf(),
+      historyReadAvailable = true,
+      historyReadGranted = false,
       sessionsList = listOf(
         ExerciseSessionRecord(
           exerciseType = ExerciseSessionRecord.EXERCISE_TYPE_RUNNING,

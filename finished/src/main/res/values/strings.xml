@@ -70,8 +70,10 @@
   <string name="no_title">[No title]</string>
   <string name="delete_button">Delete</string>
   <string name="request_background_read">Request Background Read</string>
-  <string name="background_read_is_not_available">Background Read Is Not Available</string>
-  <string name="read_steps_in_background">Read Steps In Background</string>
+  <string name="background_read_is_not_available">Background Read is not available</string>
+  <string name="read_steps_in_background">Read steps in background</string>
+  <string name="request_history_read">Request History Read</string>
+  <string name="history_read_is_not_available">History Read is not available</string>
 
   <!-- Exercise Session detail screen -->
   <string name="total_active_duration">Total active duration</string>

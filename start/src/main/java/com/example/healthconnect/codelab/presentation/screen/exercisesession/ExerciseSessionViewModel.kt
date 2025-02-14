@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.health.connect.client.HealthConnectFeatures
 import androidx.health.connect.client.feature.ExperimentalFeatureAvailabilityApi
 import androidx.health.connect.client.permission.HealthPermission
+import androidx.health.connect.client.permission.HealthPermission.Companion.PERMISSION_READ_HEALTH_DATA_HISTORY
 import androidx.health.connect.client.permission.HealthPermission.Companion.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
@@ -53,6 +54,7 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
   )
 
   val backgroundReadPermissions = setOf(PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND)
+  val historyReadPermissions = setOf(PERMISSION_READ_HEALTH_DATA_HISTORY)
 
   var permissionsGranted = mutableStateOf(false)
     private set
@@ -61,6 +63,12 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     private set
 
   var backgroundReadGranted = mutableStateOf(false)
+    private set
+
+  var historyReadAvailable = mutableStateOf(false)
+    private set
+
+  var historyReadGranted = mutableStateOf(false)
     private set
 
   var sessionsList: MutableState<List<ExerciseSessionRecord>> = mutableStateOf(listOf())
@@ -99,10 +107,10 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
   }
 
   private suspend fun readExerciseSessions() {
-    val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+    val start = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(90)
     val now = Instant.now()
 
-    sessionsList.value = healthConnectManager.readExerciseSessions(startOfDay.toInstant(), now)
+    sessionsList.value = healthConnectManager.readExerciseSessions(start.toInstant(), now)
   }
 
   fun enqueueReadStepWorker(){
@@ -125,8 +133,11 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     backgroundReadAvailable.value = healthConnectManager.isFeatureAvailable(
       HealthConnectFeatures.FEATURE_READ_HEALTH_DATA_IN_BACKGROUND
     )
+    historyReadAvailable.value = healthConnectManager.isFeatureAvailable(
+      HealthConnectFeatures.FEATURE_READ_HEALTH_DATA_HISTORY
+    )
     backgroundReadGranted.value = healthConnectManager.hasAllPermissions(backgroundReadPermissions)
-
+    historyReadGranted.value = healthConnectManager.hasAllPermissions(historyReadPermissions)
     uiState = try {
       if (permissionsGranted.value) {
         block()

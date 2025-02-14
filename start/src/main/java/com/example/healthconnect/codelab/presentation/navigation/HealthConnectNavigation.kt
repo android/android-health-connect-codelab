@@ -84,6 +84,9 @@ fun HealthConnectNavigation(
       val backgroundReadPermissions = viewModel.backgroundReadPermissions
       val backgroundReadAvailable by viewModel.backgroundReadAvailable
       val backgroundReadGranted by viewModel.backgroundReadGranted
+      val historyReadPermissions = viewModel.historyReadPermissions
+      val historyReadAvailable by viewModel.historyReadAvailable
+      val historyReadGranted by viewModel.historyReadGranted
       val onPermissionsResult = { viewModel.initialLoad() }
       val permissionsLauncher =
         rememberLauncherForActivityResult(viewModel.permissionsLauncher) {
@@ -95,7 +98,10 @@ fun HealthConnectNavigation(
         backgroundReadAvailable = backgroundReadAvailable,
         backgroundReadGranted = backgroundReadGranted,
         backgroundReadPermissions = backgroundReadPermissions,
-        onReadClick = {
+        historyReadAvailable = historyReadAvailable,
+        historyReadGranted = historyReadGranted,
+        historyReadPermissions = historyReadPermissions,
+        onBackgroundReadClick = {
           viewModel.enqueueReadStepWorker()
         },
         sessionsList = sessionsList,
