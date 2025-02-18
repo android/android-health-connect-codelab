@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.health.connect.client.records.WeightRecord
+import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.units.Mass
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.data.dateTimeWithOffsetOrDefault
@@ -196,11 +197,13 @@ fun InputReadingsScreenPreview() {
       permissionsGranted = true,
       readingsList = listOf(
         WeightRecord(
+          metadata = Metadata.manualEntry(),
           weight = Mass.kilograms(54.0),
           time = inputTime,
           zoneOffset = null
         ),
         WeightRecord(
+          metadata = Metadata.manualEntry(),
           weight = Mass.kilograms(55.0),
           time = inputTime,
           zoneOffset = null
