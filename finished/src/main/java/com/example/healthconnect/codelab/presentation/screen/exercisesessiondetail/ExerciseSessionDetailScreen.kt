@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SpeedRecord
+import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.units.Energy
 import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Velocity
@@ -170,6 +171,7 @@ private fun generateSpeedData(): List<SpeedRecord> {
   }
   return listOf(
     SpeedRecord(
+      metadata = Metadata.manualEntry(),
       startTime = time.toInstant(),
       startZoneOffset = time.offset,
       endTime = end.toInstant(),
@@ -194,6 +196,7 @@ private fun generateHeartRateSeries(): List<HeartRateRecord> {
   }
   return listOf(
     HeartRateRecord(
+      metadata = Metadata.manualEntry(),
       startTime = time.toInstant(),
       startZoneOffset = time.offset,
       endTime = end.toInstant(),

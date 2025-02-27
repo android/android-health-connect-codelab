@@ -25,7 +25,6 @@ import androidx.health.connect.client.HealthConnectClient.Companion.SDK_AVAILABL
 import androidx.health.connect.client.HealthConnectFeatures
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.Change
-import androidx.health.connect.client.feature.ExperimentalFeatureAvailabilityApi
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.Record
@@ -33,6 +32,7 @@ import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.health.connect.client.records.WeightRecord
 import androidx.health.connect.client.records.metadata.DataOrigin
+import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -74,7 +74,6 @@ class HealthConnectManager(private val context: Context) {
     }
   }
 
-  @OptIn(ExperimentalFeatureAvailabilityApi::class)
   fun isFeatureAvailable(feature: Int): Boolean{
     return healthConnectClient
       .features
@@ -101,6 +100,7 @@ class HealthConnectManager(private val context: Context) {
   suspend fun writeWeightInput(weightInput: Double) {
     val time = ZonedDateTime.now().withNano(0)
     val weightRecord = WeightRecord(
+      metadata = Metadata.manualEntry(),
       weight = Mass.kilograms(weightInput),
       time = time.toInstant(),
       zoneOffset = time.offset
@@ -160,6 +160,7 @@ class HealthConnectManager(private val context: Context) {
     healthConnectClient.insertRecords(
       listOf(
         ExerciseSessionRecord(
+          metadata = Metadata.manualEntry(),
           startTime = start.toInstant(),
           startZoneOffset = start.offset,
           endTime = end.toInstant(),
@@ -168,6 +169,7 @@ class HealthConnectManager(private val context: Context) {
           title = "My Run #${Random.nextInt(0, 60)}"
         ),
         StepsRecord(
+          metadata = Metadata.manualEntry(),
           startTime = start.toInstant(),
           startZoneOffset = start.offset,
           endTime = end.toInstant(),
@@ -175,6 +177,7 @@ class HealthConnectManager(private val context: Context) {
           count = (1000 + 1000 * Random.nextInt(3)).toLong()
         ),
         TotalCaloriesBurnedRecord(
+          metadata = Metadata.manualEntry(),
           startTime = start.toInstant(),
           startZoneOffset = start.offset,
           endTime = end.toInstant(),
@@ -204,6 +207,7 @@ class HealthConnectManager(private val context: Context) {
       time = time.plusSeconds(30)
     }
     return HeartRateRecord(
+      metadata = Metadata.manualEntry(),
       startTime = sessionStartTime.toInstant(),
       startZoneOffset = sessionStartTime.offset,
       endTime = sessionEndTime.toInstant(),

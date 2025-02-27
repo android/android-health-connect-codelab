@@ -206,22 +206,22 @@ fun ExerciseSessionScreenPreview() {
       historyReadGranted = false,
       sessionsList = listOf(
         ExerciseSessionRecord(
+          metadata = Metadata.manualEntryWithId(UUID.randomUUID().toString()),
           exerciseType = ExerciseSessionRecord.EXERCISE_TYPE_RUNNING,
           title = "Running",
           startTime = runningStartTime.toInstant(),
           startZoneOffset = runningStartTime.offset,
           endTime = runningEndTime.toInstant(),
           endZoneOffset = runningEndTime.offset,
-          metadata = Metadata(UUID.randomUUID().toString())
         ),
         ExerciseSessionRecord(
+          metadata = Metadata.manualEntryWithId(UUID.randomUUID().toString()),
           exerciseType = ExerciseSessionRecord.EXERCISE_TYPE_WALKING,
           title = "Walking",
           startTime = walkingStartTime.toInstant(),
           startZoneOffset = walkingStartTime.offset,
           endTime = walkingEndTime.toInstant(),
           endZoneOffset = walkingEndTime.offset,
-          metadata = Metadata(UUID.randomUUID().toString())
         )
       ),
       uiState = ExerciseSessionViewModel.UiState.Done

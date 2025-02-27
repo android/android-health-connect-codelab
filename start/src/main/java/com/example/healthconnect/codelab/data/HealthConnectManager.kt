@@ -25,7 +25,6 @@ import androidx.health.connect.client.HealthConnectClient.Companion.SDK_AVAILABL
 import androidx.health.connect.client.HealthConnectFeatures
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.Change
-import androidx.health.connect.client.feature.ExperimentalFeatureAvailabilityApi
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
@@ -76,7 +75,6 @@ class HealthConnectManager(private val context: Context) {
     }
   }
 
-  @OptIn(ExperimentalFeatureAvailabilityApi::class)
   fun isFeatureAvailable(feature: Int): Boolean{
     return healthConnectClient
       .features
