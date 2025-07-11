@@ -26,8 +26,6 @@ jobs:
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-        working-directory: ./android-health-connect-codelab
 
       - name: Build finished app
-        working-directory: ./android-health-connect-codelab
         run: ./gradlew :finished:assembleDebug
